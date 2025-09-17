@@ -33,6 +33,7 @@ services:
       - ./mlruns:/mlflow/artifacts
     networks:
       - monitoring
+
   api:
     build:
       context: .
