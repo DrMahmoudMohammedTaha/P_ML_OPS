@@ -2,12 +2,15 @@
 import pandas as pd
 from flask import Flask, request, jsonify
 from prometheus_client import start_http_server, Counter, Gauge
-import mlflow.pyfunc
+import mlflow
 
 # Load the model from MLflow Model Registry
+mlflow.set_tracking_uri("http://127.0.0.1:5000")  # Add this line near the top, before loading the model
+
 model_name = "MyRFModel"
 model_version = 1  # Get the latest version from the registry in a real-world project
 model = mlflow.pyfunc.load_model(model_uri=f"models:/{model_name}/{model_version}")
+
 
 # Start the Prometheus metrics server
 start_http_server(8000)
@@ -34,7 +37,8 @@ def predict():
     latency = (end_time - start_time).total_seconds()
     PREDICTION_LATENCY.set(latency)  # Record the prediction latency
     
-    return jsonify({"prediction": prediction[0]})
+    # return jsonify({"prediction": prediction[0]})
+    return jsonify({"prediction": int(prediction[0])})
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5001)

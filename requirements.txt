@@ -1,0 +1,7 @@
+mlflow
+scikit-learn
+pandas
+flask
+prometheus_client
+pendulum
+apache-airflow
